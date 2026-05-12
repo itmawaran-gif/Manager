@@ -368,7 +368,6 @@
     </div>
   </div>
 
-<div class="page-wrapper">
 
   <!-- HEADER -->
   <header>
@@ -495,9 +494,9 @@ async function checkPassword() {
 
   // إذا ضغط Cancel أو فارغ → إعادة الطلب
   if (!input) {
-    location.reload(); // يخليه يرجع يطلب الباسورد
-    return;
-  }
+  checkPassword();
+  return;
+}
 
   const response = await fetch(SCRIPT_URL, {
     method: "POST",
