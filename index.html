@@ -484,6 +484,35 @@
 </div>
 
 <script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPrlzyeIRZLwzC1UcI5zmR7xFuFEksWDE6-xpwxJADcxFABPAbpA2zJCnUs5pBVJWI/exec";
+
+async function checkPassword() {
+
+  const saved = localStorage.getItem("mawaran_auth");
+  if (saved === "true") return;
+
+  let input = prompt("🔒 أدخل كلمة المرور:");
+
+  const response = await fetch(SCRIPT_URL, {
+    method: "POST",
+    body: JSON.stringify({ password: input }),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+
+  const data = await response.json();
+
+  if (data.success === true) {
+    localStorage.setItem("mawaran_auth", "true");
+    alert("✔ تم الدخول");
+  } else {
+    alert("❌ كلمة المرور خطأ");
+    document.body.innerHTML = "<h2 style='text-align:center;margin-top:50px'>Access Denied</h2>";
+  }
+}
+
+checkPassword();
   function setTheme(t) {
     document.body.dataset.theme = t;
     localStorage.setItem('mawaran-theme', t);
