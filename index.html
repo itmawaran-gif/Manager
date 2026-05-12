@@ -491,7 +491,7 @@ async function checkPassword() {
   const saved = localStorage.getItem("mawaran_auth");
   if (saved === "true") return;
 
-  let input = prompt("🔒 أدخل كلمة المرور:");
+  let input = prompt("🔒 Enter password:");
 
   // 🟡 إذا ضغط Cancel أو ما كتب شيء
   if (input === null || input.trim() === "") {
@@ -511,9 +511,9 @@ async function checkPassword() {
 
   if (data.success === true) {
     localStorage.setItem("mawaran_auth", "true");
-    alert("✔ تم الدخول");
+    alert("✔ Logged in");
   } else {
-    alert("❌ كلمة المرور خطأ");
+    alert("❌Incorrect password");
     document.body.innerHTML = "<h2 style='text-align:center;margin-top:50px'>Access Denied</h2>";
   }
 }}
