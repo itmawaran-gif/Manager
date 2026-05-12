@@ -13,7 +13,10 @@
   <title>MAWARAN co</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Vazirmatn:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
-    /* ========== CSS VARIABLES / THEMES ========== */
+    /* إخفاء غلاف الصفحة في البداية */
+.page-wrapper {
+  display: none;
+}
     :root {
       --transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
     }
@@ -483,54 +486,61 @@
 </div>
 
 <script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPrlzyeIRZLwzC1UcI5zmR7xFuFEksWDE6-xpwxJADcxFABPAbpA2zJCnUs5pBVJWI/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwPrlzyeIRZLwzC1UcI5zmR7xFuFEksWDE6-xpwxJADcxFABPAbpA2zJCnUs5pBVJWI/exec";
 
 async function checkPassword() {
+    const wrapper = document.querySelector('.page-wrapper');
+    const saved = localStorage.getItem("mawaran_auth");
 
-  const saved = localStorage.getItem("mawaran_auth");
-  if (saved === "true") return;
+    // إذا كان مسجلاً مسبقاً، أظهر الموقع مباشرة
+    if (saved === "true") {
+        wrapper.style.display = "block";
+        return;
+    }
 
-  let input = prompt("🔒 Enter password:");
+    let input = prompt("🔒 Enter password:");
 
-  // إذا ضغط Cancel أو فارغ → إعادة الطلب
-  if (!input) {
-  checkPassword();
-  return;
+    if (!input) {
+        alert("Password is required to access this site.");
+        location.reload(); // إعادة تحميل لإعادة السؤال
+        return;
+    }
+
+    try {
+        // نستخدم GET بدلاً من POST لتجنب مشاكل الـ CORS الشائعة في Apps Script
+        const response = await fetch(`${SCRIPT_URL}?password=${encodeURIComponent(input)}`);
+        const data = await response.json();
+
+        if (data.success === true || data.result === "success") {
+            localStorage.setItem("mawaran_auth", "true");
+            alert("✔ Logged in");
+            wrapper.style.display = "block"; // إظهار الموقع
+        } else {
+            alert("❌ Incorrect password");
+            document.body.innerHTML = "<h2 style='text-align:center;margin-top:100px; color:white;'>Access Denied</h2>";
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Connection error. Please try again.");
+    }
 }
 
-  const response = await fetch(SCRIPT_URL, {
-    method: "POST",
-    body: JSON.stringify({ password: input }),
-    headers: { "Content-Type": "application/json" }
-  });
+// تشغيل الوظيفة عند تحميل الصفحة
+window.addEventListener("DOMContentLoaded", checkPassword);
 
-  const data = await response.json();
-
-  if (data.success === true) {
-    localStorage.setItem("mawaran_auth", "true");
-    alert("✔ Logged in");
-  } else {
-    alert("❌ Incorrect password");
-    document.body.innerHTML = "<h2 style='text-align:center;margin-top:50px'>Access Denied</h2>";
-  }
-}
-
-// تشغيل عند تحميل الصفحة بشكل صحيح
-window.addEventListener("load", checkPassword);
-
-  function setTheme(t) {
+// دالة تبديل الثيمات (بقيت كما هي)
+function setTheme(t) {
     document.body.dataset.theme = t;
     localStorage.setItem('mawaran-theme', t);
     document.querySelectorAll('.theme-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.t === t);
+        btn.classList.toggle('active', btn.dataset.t === t);
     });
-  }
+}
 
-  // Load saved theme
-  (function() {
+(function() {
     const saved = localStorage.getItem('mawaran-theme') || 'ember';
     setTheme(saved);
-  })();
+})();
 </script>
 
 </body>
