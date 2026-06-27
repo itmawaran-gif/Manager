@@ -528,6 +528,37 @@
     @media (max-width: 500px) {
       .svc-dropdown { left: 58px; top: 12px; width: 190px; }
     }
+
+    .sheets-dropdown {
+  display: none;
+  position: absolute;
+  z-index: 300;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 8px;
+  min-width: 220px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+  flex-direction: column;
+  gap: 4px;
+  animation: svcFadeIn 0.2s ease;
+}
+.sheets-dropdown.open { display: flex; }
+.sheets-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Vazirmatn', sans-serif;
+  transition: background 0.2s;
+}
+.sheets-link:hover { background: var(--badge-bg); color: var(--accent); }
+.sheets-link svg { width: 18px; height: 18px; fill: var(--accent); flex-shrink: 0; }
   </style>
 </head>
 <body data-theme="ember">
@@ -891,11 +922,73 @@
         <div class="label">Showroom Clients data</div>
       </a>
     </div>
+    <div class="card">
+  <a href="javascript:void(0)" onclick="toggleSheets(event)">
+    <div class="icon-wrap">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+      </svg>
+    </div>
+    <div class="label">Google Sheets</div>
+  </a>
+</div>
 
      
   </div>
 
   <footer>© 2025 MAWARAN co &nbsp;·&nbsp; All rights reserved</footer>
+</div>
+
+<div class="sheets-dropdown" id="sheetsDropdown">
+  <!-- أضف روابطك هنا -->
+  <a class="sheets-link" href="https://docs.google.com/spreadsheets/d/18S9MJ1cxxdJPOmrD8z-m2OxAESDyyfE2fWZ6Sz4q-w0/edit?gid=222930001#gid=222930001" target="_blank">
+    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+   clints data
+  </a>
+  <a class="sheets-link" href="https://docs.google.com/spreadsheets/d/1rq7MKQMbhGPbe0IqdsUm3PK_iF7sCctsa-qE2ALP8ks/edit?gid=0#gid=0" target="_blank">
+    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+   Money
+  </a>
+  <a class="sheets-link" href="https://docs.google.com/spreadsheets/d/17I1gZX_N0_0QdswT6Hc13LJRezyz23J6v4aLjIeru8Q/edit?gid=0#gid=0" target="_blank">
+    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+   video mawaran co
+  </a>
+  <a class="sheets-link" href="https://docs.google.com/spreadsheets/d/12G07GMGBFZ7f_iEQjWf9UXRVemx4oFugcDvoq-A4bDE/edit?gid=182777741#gid=182777741" target="_blank">
+    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+   Store
+  </a>
+  <a class="sheets-link" href="https://docs.google.com/spreadsheets/d/1a0BvNb93efvOSMwQEnstMBh9k4KJ4s06L4m4CYX7jBM/edit?gid=1817945666#gid=1817945666" target="_blank">
+    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+   Rymax Client
+  </a>
+  <a class="sheets-link" href="https://docs.google.com/spreadsheets/d/1FHXhKo1RE90kwjktHrzCWWLfaKt-Zq0LKphAWOBzBbw/edit?gid=277825949#gid=277825949" target="_blank">
+    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+   Showroom data
+  </a>
+  <a class="sheets-link" href="https://docs.google.com/spreadsheets/d/1m-OQGzZW1kIA7au4jxu6aUKJs-umjRoWs3-8ZmuwBZU/edit?pli=1&gid=0#gid=0" target="_blank">
+    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+   location
+  </a>
+  <a class="sheets-link" href="https://docs.google.com/spreadsheets/d/1aYVnVz4-T6oh6jTEUaLZC_TgKjk4fWC9-7TgEg7T4gY/edit?gid=0#gid=0" target="_blank">
+    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+   RC Service admin
+  </a>
+  <a class="sheets-link" href="https://docs.google.com/spreadsheets/d/1_woOwDZVp-jqVfPcPa2hBM_EB7D8dekQt4Ra2EVopKk/edit?gid=0#gid=0" target="_blank">
+    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+   whatsapp_messages
+  </a>
+  <a class="sheets-link" href="https://docs.google.com/spreadsheets/d/1zeaS21DCDZ1iUStlD7VScLydIx0MzQDs1oRtwjghDhQ/edit?gid=0#gid=0" target="_blank">
+    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+   HR-System
+  </a>
+  <a class="sheets-link" href="رابط" target="_blank">
+    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+   اسم
+  </a>
+  <a class="sheets-link" href="رابط" target="_blank">
+    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+   اسم
+  </a>
 </div>
 
 <script>
@@ -1096,6 +1189,23 @@ async function submitSvcRequest(type, btn) {
     svcSending = false;
   }
 }
+
+function toggleSheets(e) {
+  e.preventDefault();
+  const drop = document.getElementById('sheetsDropdown');
+  const card = e.currentTarget.closest('.card');
+  const rect = card.getBoundingClientRect();
+  drop.style.top = (rect.bottom + window.scrollY + 8) + 'px';
+  drop.style.left = rect.left + 'px';
+  drop.classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  const drop = document.getElementById('sheetsDropdown');
+  if (!drop || !drop.classList.contains('open')) return;
+  if (!e.target.closest('#sheetsDropdown') && !e.target.closest('.card a[onclick]')) {
+    drop.classList.remove('open');
+  }
+});
 </script>
 
 </body>
