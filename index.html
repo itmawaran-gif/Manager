@@ -559,6 +559,81 @@
 }
 .sheets-link:hover { background: var(--badge-bg); color: var(--accent); }
 .sheets-link svg { width: 18px; height: 18px; fill: var(--accent); flex-shrink: 0; }
+
+.links-dropdown {
+  display: none;
+  position: absolute;
+  z-index: 300;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 8px;
+  min-width: 260px;
+  max-width: 320px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+  flex-direction: column;
+  gap: 4px;
+  animation: svcFadeIn 0.2s ease;
+}
+.links-dropdown.open { display: flex; }
+
+.links-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 10px;
+  transition: background 0.15s;
+}
+.links-item:hover { background: var(--badge-bg); }
+
+.links-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px;
+  flex: 1;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Vazirmatn', sans-serif;
+  border-radius: 10px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.links-link:hover { color: var(--accent); }
+.links-link svg {
+  width: 18px;
+  height: 18px;
+  fill: var(--accent);
+  flex-shrink: 0;
+}
+
+.links-copy-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s, transform 0.1s;
+  outline: none;
+}
+.links-copy-btn:hover { background: var(--icon-bg); }
+.links-copy-btn:active { transform: scale(0.88); }
+.links-copy-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--text-muted);
+  transition: fill 0.2s;
+  pointer-events: none;
+}
+.links-copy-btn.copied svg { fill: #22c55e; }
   </style>
 </head>
 <body data-theme="ember">
@@ -933,6 +1008,17 @@
   </a>
 </div>
 
+<div class="card">
+  <a href="javascript:void(0)" onclick="toggleLinks(event)">
+    <div class="icon-wrap">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+      </svg>
+    </div>
+    <div class="label">Links</div>
+  </a>
+</div>
+
      
   </div>
 
@@ -981,14 +1067,80 @@
     <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
    HR-System
   </a>
-  <a class="sheets-link" href="رابط" target="_blank">
-    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-   اسم
-  </a>
-  <a class="sheets-link" href="رابط" target="_blank">
-    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-   اسم
-  </a>
+</div>
+
+<div class="links-dropdown" id="linksDropdown">
+
+  <div class="links-item">
+    <a class="links-link" href="https://mawaranco.com" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+      MAWARAN CO
+    </a>
+    <button class="links-copy-btn" onclick="copyLink('https://mawaranco.com', this)" title="copy-Link ">
+      <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+    </button>
+  </div>
+
+  <div class="links-item">
+    <a class="links-link" href="https://itmawaran-gif.github.io/mawaran/" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+      Inventory Store + showroom price
+    </a>
+    <button class="links-copy-btn" onclick="copyLink('https://itmawaran-gif.github.io/mawaran/', this)" title="copy-Link">
+      <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+    </button>
+  </div>
+
+  <div class="links-item">
+    <a class="links-link" href="https://itmawaran-gif.github.io/Manager/" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+      MAWARAN Manager
+    </a>
+    <button class="links-copy-btn" onclick="copyLink('https://itmawaran-gif.github.io/Manager/', this)" title="copy-Link ">
+      <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+    </button>
+  </div>
+
+  <div class="links-item">
+    <a class="links-link" href="https://linktr.ee/RCservice" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+      RC Linktree
+    </a>
+    <button class="links-copy-btn" onclick="copyLink('https://linktr.ee/RCservice', this)" title="copy-Link ">
+      <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+    </button>
+  </div>
+
+  <div class="links-item">
+    <a class="links-link" href="https://linktr.ee/mawaranpages" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+      MAWARAN Linktree
+    </a>
+    <button class="links-copy-btn" onclick="copyLink('https://linktr.ee/mawaranpages', this)" title="copy-Link ">
+      <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+    </button>
+  </div>
+
+  <div class="links-item">
+    <a class="links-link" href="https://itmawaran4-rgb.github.io/rc-admin" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+      RC Service admin app
+    </a>
+    <button class="links-copy-btn" onclick="copyLink('https://itmawaran4-rgb.github.io/rc-admin', this)" title="copy-Link ">
+      <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+    </button>
+  </div>
+
+  <div class="links-item">
+    <a class="links-link" href="https://itmawaran4-rgb.github.io/HR-System" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+      HR Mawaran system
+    </a>
+    <button class="links-copy-btn" onclick="copyLink('https://itmawaran4-rgb.github.io/HR-System', this)" title="copy-Link ">
+      <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+    </button>
+  </div>
+
 </div>
 
 <script>
@@ -1206,6 +1358,42 @@ document.addEventListener('click', e => {
     drop.classList.remove('open');
   }
 });
+
+function toggleLinks(e) {
+  e.preventDefault();
+  const drop = document.getElementById('linksDropdown');
+  const sheetsDrop = document.getElementById('sheetsDropdown');
+  if (sheetsDrop) sheetsDrop.classList.remove('open');
+  const card = e.currentTarget.closest('.card');
+  const rect = card.getBoundingClientRect();
+  drop.style.top = (rect.bottom + window.scrollY + 8) + 'px';
+  drop.style.left = rect.left + 'px';
+  drop.classList.toggle('open');
+}
+
+document.addEventListener('click', e => {
+  const drop = document.getElementById('linksDropdown');
+  if (!drop || !drop.classList.contains('open')) return;
+  if (!e.target.closest('#linksDropdown') && !e.target.closest('.card a[onclick*="toggleLinks"]')) {
+    drop.classList.remove('open');
+  }
+});
+
+function copyLink(url, btn) {
+  navigator.clipboard.writeText(url).then(() => {
+    btn.classList.add('copied');
+    const origSvg = btn.innerHTML;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#22c55e"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+    setTimeout(() => { btn.innerHTML = origSvg; btn.classList.remove('copied'); }, 1500);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = url;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  });
+}
 </script>
 
 </body>
